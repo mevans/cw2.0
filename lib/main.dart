@@ -1,22 +1,22 @@
-import 'blockworld.dart';
+import 'models/blockworld.dart';
 
 main() {
+  Blockworld blockworld = Blockworld.close();
   breadthFirstSearch();
 }
 
 void breadthFirstSearch() {
   List<Blockworld> queue = [Blockworld.close()];
-  bool solutionFound = false;
-  while (!solutionFound) {
-    Blockworld latest = queue.first;
-    print(latest);
-    if (latest.isFinishState()) {
-      solutionFound = true;
-      print("Found!");
-      print(latest);
+  bool hasReachedFinishState = false;
+  while (!hasReachedFinishState) {
+    Blockworld state = queue.removeAt(0);
+    print(state);
+    if (state.isFinishState()) {
+      print('Breadth First Search Completed: Depth of ${state.findDepth()}');
+      print(state);
+      hasReachedFinishState = true;
     } else {
-      queue.removeAt(0);
-      queue.addAll(latest.generateChildren());
+      queue.addAll(state.generateChildren());
     }
   }
 }
