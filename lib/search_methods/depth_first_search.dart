@@ -7,6 +7,7 @@ SearchResult depthFirstSearch(Blockworld startState) {
   SearchResult result = SearchResult(searchMethod: "Depth First Search");
   ListQueue<Blockworld> stack = ListQueue.from([Blockworld.close()]);
   int nodesExpanded = 0;
+
   while (stack.isNotEmpty) {
     Blockworld state = stack.removeFirst();
     if (state.isFinishState()) {
@@ -15,6 +16,7 @@ SearchResult depthFirstSearch(Blockworld startState) {
       return result;
     }
     nodesExpanded++;
+    // Add the children to the top of the stack
     state.generateChildren().forEach((child) {
       stack.addFirst(child);
     });

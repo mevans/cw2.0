@@ -1,5 +1,6 @@
 import 'blockworld.dart';
 
+// Model to hold information about a searches result
 class SearchResult {
   final String searchMethod;
   Blockworld finalState;

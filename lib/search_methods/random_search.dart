@@ -11,6 +11,7 @@ SearchResult randomSearch(Blockworld startState) {
       result.nodesExpanded = nodesExpanded;
       return result;
     }
+    // Select the first item from the list of randomised children
     state = state.generateChildren(randomise: true).first;
     nodesExpanded++;
   }

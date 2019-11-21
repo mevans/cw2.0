@@ -1,10 +1,12 @@
 import 'coordinate.dart';
 
+// A block is one of the 3 game blocks in the world, either an A, B, or C
 class Block {
   final Coordinate goal;
   final String marker;
   Coordinate location;
 
+  // The 3 constructors for the different types of blocks
   Block.a({close = false})
       : location = !close ? Coordinate(1, 4) : Coordinate(4, 2),
         marker = "A",

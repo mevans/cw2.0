@@ -18,17 +18,21 @@ class Blockworld {
         c = Block.c(),
         agent = Coordinate(4, 4);
 
+  // Create a world which is close to the final state, to make it easier for search methods
   Blockworld.close()
       : a = Block.a(close: true),
         b = Block.b(close: true),
         c = Block.c(close: true),
         agent = Coordinate(2, 2);
 
+  // Clone the object to remove the references
   Blockworld clone() => Blockworld(
       a: this.a.clone(), b: this.b.clone(), c: this.c.clone(), agent: this.agent.clone(), parent: this.parent);
 
+  // The world is in the finish state if the 3 blocks are
   bool isFinishState() => a.inGoalLocation() && b.inGoalLocation() && c.inGoalLocation();
 
+  // Check if the agent can move in a given direction without 'going off' the grid
   bool canMove(Direction direction) {
     return (direction == Direction.Up && agent.y > 1 ||
         direction == Direction.Down && agent.y < 4 ||
@@ -38,6 +42,7 @@ class Blockworld {
 
   void move(Direction direction) {
     if (!canMove(direction)) return;
+    // Create a movement vector based on the direction
     Coordinate movementVector;
     switch (direction) {
       case Direction.Up:
@@ -54,7 +59,7 @@ class Blockworld {
         break;
     }
     Coordinate movingInto = this.agent + movementVector;
-
+    // Switch block and agent positions if the agent is moving into a block
     if (blockAt(movingInto) != null) {
       blockAt(movingInto).moveTo(this.agent);
     }
@@ -62,14 +67,15 @@ class Blockworld {
     this.agent.moveTo(movingInto);
   }
 
+  // Generate the children for this state ie. a list of this state moved in the 4 directions
   List<Blockworld> generateChildren({bool randomise = false, bool mustBeValidMove = true}) {
     List<Blockworld> children = [];
     Direction.values.forEach((direction) {
       if (this.canMove(direction) || !mustBeValidMove) {
-        Blockworld clone = this.clone();
-        clone.parent = this;
-        clone.directionMoved = direction;
-        clone.move(direction);
+        Blockworld clone = this.clone()
+          ..parent = this
+          ..directionMoved = direction
+          ..move(direction);
         children.add(clone);
       }
     });
@@ -79,6 +85,7 @@ class Blockworld {
     return children;
   }
 
+  // Return the block at the coordinate
   Block blockAt(Coordinate coordinate) {
     if (a.location == coordinate) return a;
     if (b.location == coordinate) return b;
@@ -86,8 +93,10 @@ class Blockworld {
     return null;
   }
 
+  // The heuristic which is used in the A* search - all of the blocks distances from the goal
   int distanceFromGoal() => this.a.distanceFromGoal() + this.b.distanceFromGoal() + this.c.distanceFromGoal();
 
+  // Find the depth of the current state by navigation to the parent of the parent of the parent... and incrementing
   int findDepth() {
     int depth = 0;
     Blockworld lookingAt = this;
@@ -98,6 +107,7 @@ class Blockworld {
     return depth;
   }
 
+  // Generates the sequence from the start state to the current state
   List<Blockworld> generateSequence() {
     List<Blockworld> allLevels = [this];
     Blockworld lookingAt = this;
@@ -108,6 +118,7 @@ class Blockworld {
     return allLevels.reversed.toList();
   }
 
+  // Display the directions moved from the start state to the current state
   void displayCondensed() {
     for (Blockworld state in generateSequence()) {
       if (state.directionMoved == null) {
@@ -118,6 +129,7 @@ class Blockworld {
     }
   }
 
+  // Display directions moved as well as the world
   void displayMoves() {
     for (Blockworld state in generateSequence()) {
       if (state.directionMoved == null) {
@@ -129,6 +141,7 @@ class Blockworld {
     }
   }
 
+  // Create visual representation of the board
   @override
   String toString() {
     String string = "";
