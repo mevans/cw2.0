@@ -6,7 +6,7 @@ class Block {
   Coordinate location;
 
   Block.a({close = false})
-      : location = !close ? Coordinate(1, 4) : Coordinate(3, 2),
+      : location = !close ? Coordinate(1, 4) : Coordinate(4, 2),
         marker = "A",
         goal = Coordinate(2, 2);
 
@@ -31,4 +31,22 @@ class Block {
   Block clone() => Block(location: location.clone(), goal: goal.clone(), marker: marker);
 
   String toString() => 'Block{location: $location}';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Block &&
+              runtimeType == other.runtimeType &&
+              goal == other.goal &&
+              marker == other.marker &&
+              location == other.location;
+
+  @override
+  int get hashCode =>
+      goal.hashCode ^
+      marker.hashCode ^
+      location.hashCode;
+
+
+
 }

@@ -8,8 +8,9 @@ class Blockworld {
   Block c;
   Coordinate agent;
   Blockworld parent;
+  Direction directionMoved;
 
-  Blockworld({this.a, this.b, this.c, this.agent});
+  Blockworld({this.a, this.b, this.c, this.agent, this.parent});
 
   Blockworld.start()
       : a = Block.a(),
@@ -23,7 +24,8 @@ class Blockworld {
         c = Block.c(close: true),
         agent = Coordinate(2, 2);
 
-  Blockworld clone() => Blockworld(a: this.a.clone(), b: this.b.clone(), c: this.c.clone(), agent: this.agent.clone());
+  Blockworld clone() => Blockworld(
+      a: this.a.clone(), b: this.b.clone(), c: this.c.clone(), agent: this.agent.clone(), parent: this.parent);
 
   bool isFinishState() => a.inGoalLocation() && b.inGoalLocation() && c.inGoalLocation();
 
@@ -60,13 +62,15 @@ class Blockworld {
     this.agent.moveTo(movingInto);
   }
 
-  List<Blockworld> generateChildren({bool randomise = false}) {
+  List<Blockworld> generateChildren({bool randomise = false, bool mustBeValidMove = true}) {
     List<Blockworld> children = [];
     Direction.values.forEach((direction) {
-      if (this.canMove(direction)) {
+      if (this.canMove(direction) || !mustBeValidMove) {
         Blockworld clone = this.clone();
         clone.parent = this;
-        children.add(clone..move(direction));
+        clone.directionMoved = direction;
+        clone.move(direction);
+        children.add(clone);
       }
     });
     if (randomise) {
@@ -94,6 +98,37 @@ class Blockworld {
     return depth;
   }
 
+  List<Blockworld> generateSequence() {
+    List<Blockworld> allLevels = [this];
+    Blockworld lookingAt = this;
+    while (lookingAt.parent != null) {
+      lookingAt = lookingAt.parent;
+      allLevels.add(lookingAt);
+    }
+    return allLevels.reversed.toList();
+  }
+
+  void displayCondensed() {
+    for (Blockworld state in generateSequence()) {
+      if (state.directionMoved == null) {
+        print("Start State");
+      } else {
+        print(state.directionMoved.toString().split(".")[1]);
+      }
+    }
+  }
+
+  void displayMoves() {
+    for (Blockworld state in generateSequence()) {
+      if (state.directionMoved == null) {
+        print("Start State");
+      } else {
+        print(state.directionMoved);
+      }
+      print(state);
+    }
+  }
+
   @override
   String toString() {
     String string = "";
@@ -118,15 +153,14 @@ class Blockworld {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Blockworld &&
-          a.location.x == this.a.location.x &&
-          a.location.y == this.a.location.y &&
-          b.location.x == this.b.location.x &&
-          b.location.y == this.b.location.y &&
-          c.location.x == this.c.location.x &&
-          c.location.y == this.c.location.y &&
-          agent.x == this.agent.x &&
-          agent.y == this.agent.y;
+          runtimeType == other.runtimeType &&
+          a == other.a &&
+          b == other.b &&
+          c == other.c &&
+          agent == other.agent &&
+          parent == other.parent &&
+          directionMoved == other.directionMoved;
 
   @override
-  int get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode ^ agent.hashCode;
+  int get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode ^ agent.hashCode ^ parent.hashCode ^ directionMoved.hashCode;
 }

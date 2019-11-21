@@ -1,22 +1,16 @@
+import 'dart:async';
+
 import 'models/blockworld.dart';
+import 'search_methods/astar_search.dart';
+import 'search_methods/breadth_first_search.dart';
+import 'search_methods/depth_first_search.dart';
+import 'search_methods/iterative_deepening_search.dart';
+import 'search_methods/random_search.dart';
 
 main() {
-  Blockworld blockworld = Blockworld.close();
-  breadthFirstSearch();
-}
-
-void breadthFirstSearch() {
-  List<Blockworld> queue = [Blockworld.close()];
-  bool hasReachedFinishState = false;
-  while (!hasReachedFinishState) {
-    Blockworld state = queue.removeAt(0);
-    print(state);
-    if (state.isFinishState()) {
-      print('Breadth First Search Completed: Depth of ${state.findDepth()}');
-      print(state);
-      hasReachedFinishState = true;
-    } else {
-      queue.addAll(state.generateChildren());
-    }
-  }
+  print(aStarSearch(Blockworld.start()));
+  print(iterativeDeepeningSearch(Blockworld.start()));
+  print(randomSearch(Blockworld.start()));
+  print(depthFirstSearch(Blockworld.start()));
+  print(breadthFirstSearch(Blockworld.start()));
 }
