@@ -8,7 +8,7 @@ class Block {
 
   // The 3 constructors for the different types of blocks
   Block.a({close = false})
-      : location = !close ? Coordinate(1, 4) : Coordinate(4, 2),
+      : location = !close ? Coordinate(1, 4) : Coordinate(3, 2),
         marker = "A",
         goal = Coordinate(2, 2);
 
@@ -37,18 +37,12 @@ class Block {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Block &&
-              runtimeType == other.runtimeType &&
-              goal == other.goal &&
-              marker == other.marker &&
-              location == other.location;
+      other is Block &&
+          runtimeType == other.runtimeType &&
+          goal == other.goal &&
+          marker == other.marker &&
+          location == other.location;
 
   @override
-  int get hashCode =>
-      goal.hashCode ^
-      marker.hashCode ^
-      location.hashCode;
-
-
-
+  int get hashCode => goal.hashCode ^ marker.hashCode ^ location.hashCode;
 }

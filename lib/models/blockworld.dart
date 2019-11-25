@@ -25,6 +25,12 @@ class Blockworld {
         c = Block.c(close: true),
         agent = Coordinate(2, 2);
 
+  Blockworld.custom({aCoordinate, bCoordinate, cCoordinate, agent})
+      : a = Block.a()..location = aCoordinate,
+        b = Block.b()..location = bCoordinate,
+        c = Block.c()..location = cCoordinate,
+        agent = agent;
+
   // Clone the object to remove the references
   Blockworld clone() => Blockworld(
       a: this.a.clone(), b: this.b.clone(), c: this.c.clone(), agent: this.agent.clone(), parent: this.parent);
@@ -150,11 +156,11 @@ class Blockworld {
         Coordinate coordinate = Coordinate(x, y);
         Block block = blockAt(coordinate);
         if (agent == coordinate) {
-          string += "⧆";
+          string += "* ";
         } else if (block != null) {
-          string += block.marker;
+          string += "${block.marker} ";
         } else {
-          string += "□";
+          string += "□ ";
         }
       }
       string += "\n";
