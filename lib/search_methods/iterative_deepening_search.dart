@@ -14,6 +14,9 @@ SearchResult iterativeDeepeningSearch(Blockworld startState, {graphSearch = fals
 
   while (stack.isNotEmpty) {
     Blockworld state = stack.removeFirst();
+    if (stack.length + seen.length > result.maxSpaceUsed) {
+      result.maxSpaceUsed = stack.length + seen.length;
+    }
     if (!graphSearch || !seen.contains(state.toString())) {
       if (state.isFinishState()) {
         result.finalState = state;

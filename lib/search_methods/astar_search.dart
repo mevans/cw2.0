@@ -16,6 +16,9 @@ SearchResult aStarSearch(Blockworld startState) {
 
   while (priorityQueue.isNotEmpty) {
     Blockworld state = priorityQueue.removeFirst();
+    if (priorityQueue.length + seen.length > result.maxSpaceUsed) {
+      result.maxSpaceUsed = priorityQueue.length + seen.length;
+    }
     // Only do something if the state hasn't been seen
     if (!seen.contains(state.toString())) {
       if (state.isFinishState()) {

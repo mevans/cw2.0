@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'enums/direction.dart';
 import 'models/blockworld.dart';
 import 'models/search_result.dart';
 import 'search_methods/astar_search.dart';
@@ -8,17 +7,10 @@ import 'search_methods/breadth_first_search.dart';
 import 'search_methods/depth_first_search.dart';
 import 'search_methods/iterative_deepening_search.dart';
 
-List<Function> searches = [
-  aStarSearch,
-  depthFirstSearch,
-  iterativeDeepeningSearch,
-  breadthFirstSearch
-];
+List<Function> searches = [aStarSearch, depthFirstSearch, iterativeDeepeningSearch, breadthFirstSearch];
 
 main() {
-
-  final depths = iterativeDeepeningSearch(Blockworld.start());
-  runWithDepth(14, depths.finalState.generateChildren());
+  print(aStarSearch(Blockworld.start()));
 
 //  Blockworld blockworld = Blockworld.start();
 //  print(depthFirstSearch(blockworld));

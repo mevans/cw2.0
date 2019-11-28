@@ -9,13 +9,9 @@ SearchResult breadthFirstSearch(Blockworld startState, {graphSearch = false}) {
   Queue<Blockworld> queue = Queue.from([startState]);
   int nodesExpanded = 0;
   int nodesGenerated = 0;
-  int atLastDepth = 0;
 
   while (queue.isNotEmpty) {
     Blockworld state = queue.removeFirst();
-    if (state.findDepth() == 13) {
-      atLastDepth++;
-    }
     if (queue.length + seen.length > result.maxSpaceUsed) {
       result.maxSpaceUsed = queue.length + seen.length;
     }
@@ -25,7 +21,6 @@ SearchResult breadthFirstSearch(Blockworld startState, {graphSearch = false}) {
         result.finalState = state;
         result.nodesExpanded = nodesExpanded;
         result.nodesGenerated = nodesGenerated;
-        print(atLastDepth);
         return result;
       }
       // A node has been expanded, and add its children to the queue
