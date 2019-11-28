@@ -2,7 +2,7 @@ import '../models/blockworld.dart';
 import '../models/search_result.dart';
 
 SearchResult randomSearch(Blockworld startState) {
-  SearchResult result = SearchResult(searchMethod: "Random Search");
+  SearchResult result = SearchResult("Random Search");
   Blockworld state = startState;
   int nodesExpanded = 0;
   while (!startState.isFinishState()) {

@@ -4,8 +4,8 @@ import '../models/blockworld.dart';
 import '../models/search_result.dart';
 
 SearchResult iterativeDeepeningSearch(Blockworld startState, {graphSearch = false}) {
-  List<String> seen = graphSearch ? [] : null;
-  SearchResult result = SearchResult(searchMethod: "Iterative Deepening Search");
+  List<String> seen = [];
+  SearchResult result = SearchResult("Iterative Deepening Search");
   ListQueue<Blockworld> stack = ListQueue.from([Blockworld.close()]);
   // Max depth variable keeps track of the max depth the 'dfs' can look through
   int maxDepth = 0;

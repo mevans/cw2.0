@@ -7,7 +7,7 @@ import '../models/search_result.dart';
 // This is a graph search, as a normal tree search results in loops of left-right-left-right etc.
 SearchResult aStarSearch(Blockworld startState) {
   List<String> seen = [];
-  SearchResult result = SearchResult(searchMethod: "A* Search");
+  SearchResult result = SearchResult("A* Search");
   // Create a priority queue, which automatically sorts the states when they are added (by their distance from the goal)
   PriorityQueue<Blockworld> priorityQueue = PriorityQueue((s1, s2) => s1.distanceFromGoal() - s2.distanceFromGoal());
   priorityQueue.add(startState);

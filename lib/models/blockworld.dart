@@ -9,14 +9,15 @@ class Blockworld {
   Coordinate agent;
   Blockworld parent;
   Direction directionMoved;
+  int size;
 
-  Blockworld({this.a, this.b, this.c, this.agent, this.parent});
+  Blockworld({this.a, this.b, this.c, this.agent, this.parent, this.size});
 
-  Blockworld.start()
+  Blockworld.start({this.size = 4})
       : a = Block.a(),
         b = Block.b(),
         c = Block.c(),
-        agent = Coordinate(4, 4);
+        agent = Coordinate(size, size);
 
   // Create a world which is close to the final state, to make it easier for search methods
   Blockworld.close()
@@ -33,7 +34,13 @@ class Blockworld {
 
   // Clone the object to remove the references
   Blockworld clone() => Blockworld(
-      a: this.a.clone(), b: this.b.clone(), c: this.c.clone(), agent: this.agent.clone(), parent: this.parent);
+      a: this.a.clone(),
+      b: this.b.clone(),
+      c: this.c.clone(),
+      agent: this.agent.clone(),
+      parent: this.parent,
+      size: size
+  );
 
   // The world is in the finish state if the 3 blocks are
   bool isFinishState() => a.inGoalLocation() && b.inGoalLocation() && c.inGoalLocation();
@@ -41,9 +48,9 @@ class Blockworld {
   // Check if the agent can move in a given direction without 'going off' the grid
   bool canMove(Direction direction) {
     return (direction == Direction.Up && agent.y > 1 ||
-        direction == Direction.Down && agent.y < 4 ||
+        direction == Direction.Down && agent.y < size ||
         direction == Direction.Left && agent.x > 1 ||
-        direction == Direction.Right && agent.x < 4);
+        direction == Direction.Right && agent.x < size);
   }
 
   void move(Direction direction) {
@@ -151,8 +158,8 @@ class Blockworld {
   @override
   String toString() {
     String string = "";
-    for (int y = 1; y < 5; y++) {
-      for (int x = 1; x < 5; x++) {
+    for (int y = 1; y < size + 1; y++) {
+      for (int x = 1; x < size + 1; x++) {
         Coordinate coordinate = Coordinate(x, y);
         Block block = blockAt(coordinate);
         if (agent == coordinate) {

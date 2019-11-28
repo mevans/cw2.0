@@ -4,8 +4,8 @@ import '../models/blockworld.dart';
 import '../models/search_result.dart';
 
 SearchResult depthFirstSearch(Blockworld startState, {graphSearch = false}) {
-  List<String> seen = graphSearch ? [] : null;
-  SearchResult result = SearchResult(searchMethod: "Depth First Search");
+  List<String> seen = [];
+  SearchResult result = SearchResult("Depth First Search");
   ListQueue<Blockworld> stack = ListQueue.from([startState]);
   int nodesExpanded = 0;
   int nodesGenerated = 0;
@@ -17,6 +17,7 @@ SearchResult depthFirstSearch(Blockworld startState, {graphSearch = false}) {
         result.finalState = state;
         result.nodesExpanded = nodesExpanded;
         result.nodesGenerated = nodesGenerated;
+        result.maxSpaceUsed = stack.length + seen.length; // Max space is the size of the stack as the depth is infinite
         return result;
       }
       nodesExpanded++;

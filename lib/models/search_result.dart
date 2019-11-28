@@ -6,14 +6,17 @@ class SearchResult {
   Blockworld finalState;
   int nodesExpanded;
   int nodesGenerated;
+  int maxSpaceUsed;
 
-  SearchResult({this.finalState, this.nodesExpanded, this.searchMethod, this.nodesGenerated});
+  SearchResult(this.searchMethod) : maxSpaceUsed = 0;
 
   bool get solutionFound => finalState != null;
 
   @override
   String toString() {
-    return '$searchMethod completed after $nodesExpanded node expansions, $nodesGenerated node generations, with a depth of ${finalState.findDepth()}';
+    return solutionFound
+        ? "$searchMethod completed after $nodesExpanded node expansions, "
+            "$nodesGenerated node generations, $maxSpaceUsed space used, with a depth of ${finalState.findDepth()}"
+        : "$searchMethod failed";
   }
-
 }
